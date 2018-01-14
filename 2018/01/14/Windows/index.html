@@ -258,8 +258,8 @@ classes that you can use:
 <li>内核内部的细粒度同步</li>
 <li>诸如I/O完成端口的编程机制，使得可以实现高效的多线程服务器进城</li>
 </ul>
-<p>###环境子系统和子系统DLL<br>将基本的Windows执行体系统服务的某个子集暴露给应用程序，每个子系统都提供了对于Windows原生服务的一个不同子集的访问能力<br>每个可执行映像都被绑定到一个子系统上，映像文件运行时，负责创建进程的代码会检查该映像头部的子系统类型代码，然后通知对应的子系统有新进程被创建<br>用户应用程序并不直接调用Windows的系统服务，而是通过一个或多个子系统DLL来进行</p>
-<p>####Windows子系统<br>Windows子系统进程并标记为关键进程（一旦出于某种原因退出，系统就会崩溃）<br>Windows子系统主要i组件:</p>
+<h3 id="环境子系统和子系统DLL"><a href="#环境子系统和子系统DLL" class="headerlink" title="环境子系统和子系统DLL"></a>环境子系统和子系统DLL</h3><p>将基本的Windows执行体系统服务的某个子集暴露给应用程序，每个子系统都提供了对于Windows原生服务的一个不同子集的访问能力<br>每个可执行映像都被绑定到一个子系统上，映像文件运行时，负责创建进程的代码会检查该映像头部的子系统类型代码，然后通知对应的子系统有新进程被创建<br>用户应用程序并不直接调用Windows的系统服务，而是通过一个或多个子系统DLL来进行</p>
+<h4 id="Windows子系统"><a href="#Windows子系统" class="headerlink" title="Windows子系统"></a>Windows子系统</h4><p>Windows子系统进程并标记为关键进程（一旦出于某种原因退出，系统就会崩溃）<br>Windows子系统主要i组件:</p>
 <ul>
 <li>对于每个会话，环境子系统进程（Csrss.exe）有一个实例加载三个DLL（Basesrv.dll,Winsrv.dll,Csrsrv.dll），包含下列支持:<ol>
 <li>建或删除进程和线程</li>
@@ -278,30 +278,28 @@ classes that you can use:
 <li>子系统DLL(如Kernel32.dll,Advapi32.dll,User32.dll和Gdi32.dll)将以文档化的Windows API函数转译成Ntoskrnl.exe和Win32k.sys中恰当的且绝大多数未文档化的内核模式系统服务调用</li>
 <li>图形设备驱动程序，与硬件相关的图像显示器驱动程序，打印机驱动程序和视频微端口驱动程序<br>子系统的大部分运行在内核模式下，所以只有少数一些Windows函数要向Windows子系统进程发送消息:进程和线程的创建和终止，网络驱动器号，临时文件的创建</li>
 </ul>
-<p>####控制台窗口宿主进程<br>Windows为系统中的每个控制台窗口使用了一个单独的进程:<strong>控制台窗口宿主进程</strong><br>多个控制台应用程序可以共享同一个控制台窗口</p>
-<p>####Ntdll.dll</p>
-<p>###内核</p>
-<blockquote>
+<h4 id="控制台窗口宿主进程"><a href="#控制台窗口宿主进程" class="headerlink" title="控制台窗口宿主进程"></a>控制台窗口宿主进程</h4><p>Windows为系统中的每个控制台窗口使用了一个单独的进程:<strong>控制台窗口宿主进程</strong><br>多个控制台应用程序可以共享同一个控制台窗口</p>
+<h4 id="Ntdll-dll"><a href="#Ntdll-dll" class="headerlink" title="Ntdll.dll"></a>Ntdll.dll</h4><h3 id="内核"><a href="#内核" class="headerlink" title="内核"></a>内核</h3><blockquote>
 <p>内核是由Ntoskrnl.exe中的一组函数以及对于硬件体系架构的低层支持(比如中断和异常分发)构成的</p>
-<p>####内核对象<br>帮助内核控制好中心处理过程，并且支持执行体对象的创建工作<br>几乎所有的策略决定都由执行体决定，线程的调度和分发由内核实现</p>
+<h4 id="内核对象"><a href="#内核对象" class="headerlink" title="内核对象"></a>内核对象</h4><p>帮助内核控制好中心处理过程，并且支持执行体对象的创建工作<br>几乎所有的策略决定都由执行体决定，线程的调度和分发由内核实现</p>
 <ul>
 <li><strong>控制对象</strong>：建立有关控制各种操作系统功能的语义</li>
 <li><strong>分发器对象</strong>：该对象融合了同步的能力，可以改变或者影响线程的调度</li>
 </ul>
 </blockquote>
-<p>####内核处理器控制区和控制块<br>内核使用处理器控制区的数据来存放与处理器有关的数据，<strong>KPCR</strong>包含了处理器的中断分发表(IDT)，任务状态段(TSS)和全局描述符表(DGT)<br><strong>KPCR</strong>也包含一个<strong>内核处理器控制块(KPRCB)</strong>的内嵌数据结构<br>KPRCB是一个私有的数据结构，仅仅Ntoskrnl.exe中的内核代码使用该结构</p>
-<p>####硬件支持<br>内核的另一个主要任务是将执行体和设备驱动程序从Windows所支持的各种硬件体系架构的差异中抽象或隔离出来</p>
-<p>###硬件抽象层<br>使得Windows操作系统能够移植到不同的硬件平台上<br>HAL是一个可加载的内核模式模块(Hal.dll)，隐藏硬件相关的细节，提供低层接口</p>
-<p>###驱动设备程序<br>驱动设备程序是可加载的内核模式模块(.sys)，用于在I/O管理和相应的硬件之间建立联系<br>在内核模式运行的三种执行环境：</p>
+<h4 id="内核处理器控制区和控制块"><a href="#内核处理器控制区和控制块" class="headerlink" title="内核处理器控制区和控制块"></a>内核处理器控制区和控制块</h4><p>内核使用处理器控制区的数据来存放与处理器有关的数据，<strong>KPCR</strong>包含了处理器的中断分发表(IDT)，任务状态段(TSS)和全局描述符表(DGT)<br><strong>KPCR</strong>也包含一个<strong>内核处理器控制块(KPRCB)</strong>的内嵌数据结构<br>KPRCB是一个私有的数据结构，仅仅Ntoskrnl.exe中的内核代码使用该结构</p>
+<h4 id="硬件支持"><a href="#硬件支持" class="headerlink" title="硬件支持"></a>硬件支持</h4><p>内核的另一个主要任务是将执行体和设备驱动程序从Windows所支持的各种硬件体系架构的差异中抽象或隔离出来</p>
+<h3 id="硬件抽象层"><a href="#硬件抽象层" class="headerlink" title="硬件抽象层"></a>硬件抽象层</h3><p>使得Windows操作系统能够移植到不同的硬件平台上<br>HAL是一个可加载的内核模式模块(Hal.dll)，隐藏硬件相关的细节，提供低层接口</p>
+<h3 id="驱动设备程序"><a href="#驱动设备程序" class="headerlink" title="驱动设备程序"></a>驱动设备程序</h3><p>驱动设备程序是可加载的内核模式模块(.sys)，用于在I/O管理和相应的硬件之间建立联系<br>在内核模式运行的三种执行环境：</p>
 <blockquote>
 <p>在发起I/O功能的用户线程的环境中<br>内核模式系统线程的环境中<br>作为中断的结果<br>驱动设备程序通过调用HAL函数维护硬件</p>
 </blockquote>
-<p>###系统进程<br>每一个Windows系统中都会有以下进程出现:</p>
+<h3 id="系统进程"><a href="#系统进程" class="headerlink" title="系统进程"></a>系统进程</h3><p>每一个Windows系统中都会有以下进程出现:</p>
 <blockquote>
 <p>Idle(占用空闲的CPU时间)<br>System进程(包含大多数内核模式进程)<br>会话管理器<br>本地会话管理器<br>Windows子系统<br>会话0初始化<br>登陆进程<br>服务控制管理器和其创建的子进程<br>本地安全认证服务器</p>
 </blockquote>
-<p>####System进程和系统进程<br>System进程是某种特殊线程的母体，这种特殊线程运行在内核模式下，称为<strong>内核模式线程</strong><br>系统线程哦那个过调用PsCreateSystemThread函数创建(该函数仅能从内核模式调用)<br>设备驱动程序可以在任何一个进程中创建系统进程</p>
-<p>####会话管理器<br>会话管理器(Smss.exe)是系统中创建的第一个用户模式进程，该进程由负责完成执行体和内核初始化工作最后阶段的内核模式系统线程创建<br>主Smss执行以下一次性初始化步骤:</p>
+<h4 id="System进程和系统进程"><a href="#System进程和系统进程" class="headerlink" title="System进程和系统进程"></a>System进程和系统进程</h4><p>System进程是某种特殊线程的母体，这种特殊线程运行在内核模式下，称为<strong>内核模式线程</strong><br>系统线程哦那个过调用PsCreateSystemThread函数创建(该函数仅能从内核模式调用)<br>设备驱动程序可以在任何一个进程中创建系统进程</p>
+<h4 id="会话管理器"><a href="#会话管理器" class="headerlink" title="会话管理器"></a>会话管理器</h4><p>会话管理器(Smss.exe)是系统中创建的第一个用户模式进程，该进程由负责完成执行体和内核初始化工作最后阶段的内核模式系统线程创建<br>主Smss执行以下一次性初始化步骤:</p>
 <ul>
 <li>将该进程和初始线程标记为<strong>关键的</strong>(如果一个标记为<strong>关键的</strong>进程或线程退出，Windows会崩溃)</li>
 <li>将进程的基本优先级提升到11</li>
@@ -326,8 +324,7 @@ classes that you can use:
 <li>为该会话创建子系统进程</li>
 <li>创建Winlogon实例或者Wininit实例<br>之后Smss进程退出</li>
 </ul>
-<p>####Windows初始化进程(Wininit.exe)</p>
-<ul>
+<h4 id="Windows初始化进程-Wininit-exe"><a href="#Windows初始化进程-Wininit-exe" class="headerlink" title="Windows初始化进程(Wininit.exe)"></a>Windows初始化进程(Wininit.exe)</h4><ul>
 <li>将自己标记为<strong>关键的</strong></li>
 <li>初始化用户模式调度设施</li>
 <li>创建特定文件夹</li>
@@ -337,13 +334,13 @@ classes that you can use:
 <li>启动Lsm.exe</li>
 <li>一直等待，直至系统停机</li>
 </ul>
-<p>####系统控制管理器(SCM)<br>服务有三种名称:</p>
+<h4 id="系统控制管理器-SCM"><a href="#系统控制管理器-SCM" class="headerlink" title="系统控制管理器(SCM)"></a>系统控制管理器(SCM)</h4><p>服务有三种名称:</p>
 <ol>
 <li>在系统中看到的正在运行的进程名称</li>
 <li>注册表中的内部名称</li>
 <li>在“服务”管理工具中给出的显示名称</li>
 </ol>
-<p>####本地会话管理器<br>管理本地机器上的终端服务器会话的状态<br>对于以下事件，它接收Winlogon的通知:</p>
+<h4 id="本地会话管理器"><a href="#本地会话管理器" class="headerlink" title="本地会话管理器"></a>本地会话管理器</h4><p>管理本地机器上的终端服务器会话的状态<br>对于以下事件，它接收Winlogon的通知:</p>
 <ol>
 <li>登陆(Logon)和注销(Logoff)</li>
 <li>Shell启动和终止</li>
@@ -351,7 +348,7 @@ classes that you can use:
 <li>与一个会话断开连接</li>
 <li>锁住或解锁桌面</li>
 </ol>
-<p>####Winlogon,LogonUI和Userinit<br>Windows登陆进程处理交互式用户的登陆和注销<br>登陆过程中的身份识别是通过一种称为<strong>凭证提供者</strong>的DLL来实现的<br>Winlogon是系统依赖的一个关键系统进程，凭证提供者和显示登陆对话框的UI都运行在Winlogon的一个子进程中，称为LogonUI</p>
+<h4 id="Winlogon-LogonUI和Userinit"><a href="#Winlogon-LogonUI和Userinit" class="headerlink" title="Winlogon,LogonUI和Userinit"></a>Winlogon,LogonUI和Userinit</h4><p>Windows登陆进程处理交互式用户的登陆和注销<br>登陆过程中的身份识别是通过一种称为<strong>凭证提供者</strong>的DLL来实现的<br>Winlogon是系统依赖的一个关键系统进程，凭证提供者和显示登陆对话框的UI都运行在Winlogon的一个子进程中，称为LogonUI</p>
 
   </section>
 
