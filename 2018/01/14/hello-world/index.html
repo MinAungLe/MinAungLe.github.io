@@ -16,16 +16,16 @@
     
     
 
-    <meta name="description" content="##操作系统模型操作系统内核代码运行在处理器的特权模式下（内核模式）应用程序代码运行在处理器的非特权模式下（用户模式）用户模式的线程在一个受保护的进程地址空间中执行（内核模式执行时，可访问系统空间）用户模式进程的分类:  系统支持进程 服务进程 用户应用程序 环境子系统服务进程在windows下，用户应用程序并不直接调用原生的Windows操作系统服务，而是通过一个或多个子系统动态链接库（DLL）">
+    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hello World | MinAungLe">
 <meta property="og:url" content="http://yoursite.com/2018/01/14/hello-world/index.html">
 <meta property="og:site_name" content="MinAungLe">
-<meta property="og:description" content="##操作系统模型操作系统内核代码运行在处理器的特权模式下（内核模式）应用程序代码运行在处理器的非特权模式下（用户模式）用户模式的线程在一个受保护的进程地址空间中执行（内核模式执行时，可访问系统空间）用户模式进程的分类:  系统支持进程 服务进程 用户应用程序 环境子系统服务进程在windows下，用户应用程序并不直接调用原生的Windows操作系统服务，而是通过一个或多个子系统动态链接库（DLL）">
-<meta property="og:updated_time" content="2018-01-14T06:29:49.156Z">
+<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:updated_time" content="2018-01-14T13:02:34.293Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hello World | MinAungLe">
-<meta name="twitter:description" content="##操作系统模型操作系统内核代码运行在处理器的特权模式下（内核模式）应用程序代码运行在处理器的非特权模式下（用户模式）用户模式的线程在一个受保护的进程地址空间中执行（内核模式执行时，可访问系统空间）用户模式进程的分类:  系统支持进程 服务进程 用户应用程序 环境子系统服务进程在windows下，用户应用程序并不直接调用原生的Windows操作系统服务，而是通过一个或多个子系统动态链接库（DLL）">
+<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
     
     
     
@@ -227,118 +227,15 @@ classes that you can use:
   </header>
 
   <section id="post-content" class="article-content post">
-    <p>##操作系统模型<br>操作系统内核代码运行在处理器的特权模式下（内核模式）<br>应用程序代码运行在处理器的非特权模式下（用户模式）<br>用户模式的线程在一个受保护的进程地址空间中执行（内核模式执行时，可访问系统空间）<br>用户模式进程的分类:</p>
-<ul>
-<li>系统支持进程</li>
-<li>服务进程</li>
-<li>用户应用程序</li>
-<li>环境子系统服务进程<br>在windows下，用户应用程序并不直接调用原生的Windows操作系统服务，而是通过一个或多个子系统<strong>动态链接库（DLL）</strong><br>Windows内核模式组件:</li>
-<li>Windows执行体：内存管理，进程，线程管理，安全性，I/O，网路和跨进程通信</li>
-<li>Windows内核：线程调度，中断和异常分发，多处理器同步</li>
-<li>设备驱动程序：硬件设备驱动程序和非硬件驱动设备程序</li>
-<li>硬件抽象层：将系统与硬件差异隔离</li>
-<li>窗口和图形：实现图形用户界面<br>| 文件名称                                     | 组件                            |<br>| —————————————- | —————————– |<br>| Ntosktnl.exe                             | 执行体和内核                        |<br>| Hal.dll                                  | 硬件抽象层                         |<br>| Win32k.sys                               | Windows子系统的内核模式部分             |<br>| Ntdll.dll                                | 支持内部函数，以及执行体函数的系统服务分发存根（stud） |<br>| Ntkrnlpa.exe（仅用于32位）                     | 执行体和内核，支持物理地址扩展，以及将内存标记为不可执行  |<br>| Kernel32.dll,Advapi32.dll,User.dll,Gdi32.dll | Windows的核心子系统DLL              |</li>
-</ul>
-<p>###对称多处理<br><strong>多任务</strong>是指让多个执行线程共享一个处理器的操作系统技术<br>Windows是一个<strong>对称对处理器</strong>操作系统<br>没有主处理器——操作系统和用户线程可以被调度到任何处理器上运行，所有处理器共享唯一的内存空间<br><strong>非对称处理器</strong>——系统只选择一个处理器来执行内核代码，其他处理器只运行用户代码<br><strong>超线程</strong>:在每个物理核上提供多个逻辑处理器，每个处理器都有自己的CPU状态，但是执行缓存和片上缓存是共享的<br>根据线程用到的内存所在的节点，将线程调度到同一节点中的处理器上，系统尽可能在节点内部满足内存申请的请求，只有必要时才从其他的节点分配内存</p>
-<p>###可伸缩性<br>Windows操作系统特性:</p>
-<ul>
-<li>能够在任何空可用的处理器上运行操作系统代码，也可以同时在多个处理器上运行操作系统代码</li>
-<li>在单个进程内执行多个线程，每个线程可以在不同的处理器上并发执行</li>
-<li>内核内部的细粒度同步</li>
-<li>诸如I/O完成端口的编程机制，使得可以实现高效的多线程服务器进城</li>
-</ul>
-<p>###环境子系统和子系统DLL<br>将基本的Windows执行体系统服务的某个子集暴露给应用程序，每个子系统都提供了对于Windows原生服务的一个不同子集的访问能力<br>每个可执行映像都被绑定到一个子系统上，映像文件运行时，负责创建进程的代码会检查该映像头部的子系统类型代码，然后通知对应的子系统有新进程被创建<br>用户应用程序并不直接调用Windows的系统服务，而是通过一个或多个子系统DLL来进行</p>
-<p>####Windows子系统<br>Windows子系统进程并标记为关键进程（一旦出于某种原因退出，系统就会崩溃）<br>Windows子系统主要i组件:</p>
-<ul>
-<li>对于每个会话，环境子系统进程（Csrss.exe）有一个实例加载三个DLL（Basesrv.dll,Winsrv.dll,Csrsrv.dll），包含下列支持:<ol>
-<li>建或删除进程和线程</li>
-<li>16位DOS虚拟机(DM)进程的部分支持(仅32位Windows)</li>
-<li>xS(Side-by-side)/Fusion和清单文件(manifext)支持</li>
-<li>其他函数</li>
-</ol>
-</li>
-<li>内核模式驱动程序(Win32k.sys)包含下列支持:<ol>
-<li>窗口管理器，控制窗口显示，管理屏幕输出，采集来自键盘鼠标和其他设备的输入，同时将用户消息传递给应用程序</li>
-<li>图形设备接口</li>
-<li>Direct功能的包装函数</li>
-</ol>
-</li>
-<li>控制台宿主进程(Conhost.exe)，提供了对控制台(字符环境)应用程序的支持</li>
-<li>子系统DLL(如Kernel32.dll,Advapi32.dll,User32.dll和Gdi32.dll)将以文档化的Windows API函数转译成Ntoskrnl.exe和Win32k.sys中恰当的且绝大多数未文档化的内核模式系统服务调用</li>
-<li>图形设备驱动程序，与硬件相关的图像显示器驱动程序，打印机驱动程序和视频微端口驱动程序<br>子系统的大部分运行在内核模式下，所以只有少数一些Windows函数要向Windows子系统进程发送消息:进程和线程的创建和终止，网络驱动器号，临时文件的创建</li>
-</ul>
-<p>####控制台窗口宿主进程<br>Windows为系统中的每个控制台窗口使用了一个单独的进程:<strong>控制台窗口宿主进程</strong><br>多个控制台应用程序可以共享同一个控制台窗口</p>
-<p>####Ntdll.dll</p>
-<p>###内核</p>
-<blockquote>
-<p>内核是由Ntoskrnl.exe中的一组函数以及对于硬件体系架构的低层支持(比如中断和异常分发)构成的</p>
-<p>####内核对象<br>帮助内核控制好中心处理过程，并且支持执行体对象的创建工作<br>几乎所有的策略决定都由执行体决定，线程的调度和分发由内核实现</p>
-<ul>
-<li><strong>控制对象</strong>：建立有关控制各种操作系统功能的语义</li>
-<li><strong>分发器对象</strong>：该对象融合了同步的能力，可以改变或者影响线程的调度</li>
-</ul>
-</blockquote>
-<p>####内核处理器控制区和控制块<br>内核使用处理器控制区的数据来存放与处理器有关的数据，<strong>KPCR</strong>包含了处理器的中断分发表(IDT)，任务状态段(TSS)和全局描述符表(DGT)<br><strong>KPCR</strong>也包含一个<strong>内核处理器控制块(KPRCB)</strong>的内嵌数据结构<br>KPRCB是一个私有的数据结构，仅仅Ntoskrnl.exe中的内核代码使用该结构</p>
-<p>####硬件支持<br>内核的另一个主要任务是将执行体和设备驱动程序从Windows所支持的各种硬件体系架构的差异中抽象或隔离出来</p>
-<p>###硬件抽象层<br>使得Windows操作系统能够移植到不同的硬件平台上<br>HAL是一个可加载的内核模式模块(Hal.dll)，隐藏硬件相关的细节，提供低层接口</p>
-<p>###驱动设备程序<br>驱动设备程序是可加载的内核模式模块(.sys)，用于在I/O管理和相应的硬件之间建立联系<br>在内核模式运行的三种执行环境：</p>
-<blockquote>
-<p>在发起I/O功能的用户线程的环境中<br>内核模式系统线程的环境中<br>作为中断的结果<br>驱动设备程序通过调用HAL函数维护硬件</p>
-</blockquote>
-<p>###系统进程<br>每一个Windows系统中都会有以下进程出现:</p>
-<blockquote>
-<p>Idle(占用空闲的CPU时间)<br>System进程(包含大多数内核模式进程)<br>会话管理器<br>本地会话管理器<br>Windows子系统<br>会话0初始化<br>登陆进程<br>服务控制管理器和其创建的子进程<br>本地安全认证服务器</p>
-</blockquote>
-<p>####System进程和系统进程<br>System进程是某种特殊线程的母体，这种特殊线程运行在内核模式下，称为<strong>内核模式线程</strong><br>系统线程哦那个过调用PsCreateSystemThread函数创建(该函数仅能从内核模式调用)<br>设备驱动程序可以在任何一个进程中创建系统进程</p>
-<p>####会话管理器<br>会话管理器(Smss.exe)是系统中创建的第一个用户模式进程，该进程由负责完成执行体和内核初始化工作最后阶段的内核模式系统线程创建<br>主Smss执行以下一次性初始化步骤:</p>
-<ul>
-<li>将该进程和初始线程标记为<strong>关键的</strong>(如果一个标记为<strong>关键的</strong>进程或线程退出，Windows会崩溃)</li>
-<li>将进程的基本优先级提升到11</li>
-<li>新的热处理器加入进来时，新的会话将可以利用这些新加入的热处理器(如果系统支持动态增加热处理器)</li>
-<li>创建相应的名，名管道和邮件槽</li>
-<li>创建<strong>ALPC</strong>端口接收命令</li>
-<li>根据特定文件定义，创建系统范围的环境变量</li>
-<li>根据特定文件定义，在对象管理器名称空间的特定目录下为特定注册表键中定义的设备符号创建链接</li>
-<li>在对象管理器名称空间中创建\Sessions根目录</li>
-<li>运行特定位置的程序(默认是Autochk.exe 执行磁盘检查)</li>
-<li>根据指定信息，处理尚未完成的文件改名操作</li>
-<li>初始化页面文件</li>
-<li>初始化注册表其余的部分</li>
-<li>运行特定文件夹中的程序</li>
-<li>打开已知DLL，将他们映射为永久内存区(映射文件)</li>
-<li>创建一个线程来响应会话创建请求</li>
-<li>创建Smss来初始化会话0(非交互绘画)</li>
-<li>创建Smss来初始化会话1(交互会话)<br>会话启动的Smss实例完成以下事项:</li>
-<li>调用<em>NiSetSystemInformation</em>，请求建立内核模式的会话数据结构</li>
-<li>为该会话创建子系统进程</li>
-<li>创建Winlogon实例或者Wininit实例<br>之后Smss进程退出</li>
-</ul>
-<p>####Windows初始化进程(Wininit.exe)</p>
-<ul>
-<li>将自己标记为<strong>关键的</strong></li>
-<li>初始化用户模式调度设施</li>
-<li>创建特定文件夹</li>
-<li>创建一个窗口站(Winsta0)和两个桌面(Winlogon和Default)，以便会话0中的进程可以在其中运行</li>
-<li>创建Servicess.exe</li>
-<li>启动Lsass.exe</li>
-<li>启动Lsm.exe</li>
-<li>一直等待，直至系统停机</li>
-</ul>
-<p>####系统控制管理器(SCM)<br>服务有三种名称:</p>
-<ol>
-<li>在系统中看到的正在运行的进程名称</li>
-<li>注册表中的内部名称</li>
-<li>在“服务”管理工具中给出的显示名称</li>
-</ol>
-<p>####本地会话管理器<br>管理本地机器上的终端服务器会话的状态<br>对于以下事件，它接收Winlogon的通知:</p>
-<ol>
-<li>登陆(Logon)和注销(Logoff)</li>
-<li>Shell启动和终止</li>
-<li>连接到一个会话</li>
-<li>与一个会话断开连接</li>
-<li>锁住或解锁桌面</li>
-</ol>
-<p>####Winlogon,LogonUI和Userinit<br>Windows登陆进程处理交互式用户的登陆和注销<br>登陆过程中的身份识别是通过一种称为<strong>凭证提供者</strong>的DLL来实现的<br>Winlogon是系统依赖的一个关键系统进程，凭证提供者和显示登陆对话框的UI都运行在Winlogon的一个子进程中，称为LogonUI</p>
+    <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 
   </section>
 
