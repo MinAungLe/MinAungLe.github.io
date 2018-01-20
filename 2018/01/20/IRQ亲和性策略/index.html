@@ -7,7 +7,7 @@
     
 
     <title>
-      归档 
+      IRQ亲和性策略 | MinAungLe 
     </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -16,13 +16,17 @@
     
     
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="归档">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+    <meta name="description" content="策略 含义     IrqPolicyMachineDefault 该设备不要求特别的亲和性策略   IrqPolicyAllCloseProcessors 无   IrqPolicyOneCloseProcessor 无   IrqPolicyAllProcessorsInMachine 该中断可以由机器上任一可用的处理器处理   IrqPolicySpecifiedProcessors">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IRQ亲和性策略 | MinAungLe">
+<meta property="og:url" content="http://yoursite.com/2018/01/20/IRQ亲和性策略/index.html">
 <meta property="og:site_name" content="MinAungLe">
+<meta property="og:description" content="策略 含义     IrqPolicyMachineDefault 该设备不要求特别的亲和性策略   IrqPolicyAllCloseProcessors 无   IrqPolicyOneCloseProcessor 无   IrqPolicyAllProcessorsInMachine 该中断可以由机器上任一可用的处理器处理   IrqPolicySpecifiedProcessors">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-01-20T07:54:39.073Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="归档">
+<meta name="twitter:title" content="IRQ亲和性策略 | MinAungLe">
+<meta name="twitter:description" content="策略 含义     IrqPolicyMachineDefault 该设备不要求特别的亲和性策略   IrqPolicyAllCloseProcessors 无   IrqPolicyOneCloseProcessor 无   IrqPolicyAllProcessorsInMachine 该中断可以由机器上任一可用的处理器处理   IrqPolicySpecifiedProcessors">
     
     
     
@@ -199,100 +203,98 @@ classes that you can use:
         <div class="content-wrapper__inner entry">
             
 
+<article class="post-container post-container--single">
 
-   <!-- do nothing -->
-
-
-<div class="main-post-list">
-    <ol class="post-list">
+  <header class="post-header">
     
-    
-    <li>
+    <h1 class="post-title">IRQ亲和性策略</h1>
 
-      <h2 class="post-list__post-title post-title">
-        <a href="/2018/01/20/IRQ亲和性策略/" title="link to IRQ亲和性策略">IRQ亲和性策略</a>
-      </h2>
 
-      <div class="post-list__meta">
 
-        <time datetime="2018-01-20" class="post-list__meta--date date">2018-01-20</time> 
-      </div>
-
-      <div class="excerpt">
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2018/01/20/Windows操作系统——中断/" title="link to Windows操作系统——中断">Windows操作系统——中断</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2018-01-20" class="post-list__meta--date date">2018-01-20</time> 
-      </div>
-
-      <div class="excerpt">
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2018/01/18/X86中断/" title="link to X86中断">X86中断</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2018-01-18" class="post-list__meta--date date">2018-01-18</time> 
-      </div>
-
-      <div class="excerpt">
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-
-      <h2 class="post-list__post-title post-title">
-        <a href="/2018/01/14/Windows系统概述/" title="link to Windows系统概述">Windows系统概述</a>
-      </h2>
-
-      <div class="post-list__meta">
-
-        <time datetime="2018-01-14" class="post-list__meta--date date">2018-01-14</time> 
-      </div>
-
-      <div class="excerpt">
-        
-      </div>
-
-      <hr class="post-list__divider" />
-    </li>
-    
-  </ol>
-
-  <hr class="post-list__divider " />
-
-<nav class="pagination" role="navigation">
     
 
-    <span class="pagination__page-number"> 1 / 1</span>
+    <div class="post-meta">
+      <time datetime="2018-01-20" class="post-meta__date date">2018-01-20</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
     
     
-</nav>
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <table>
+<thead>
+<tr>
+<th style="text-align:center">策略</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">IrqPolicyMachineDefault</td>
+<td>该设备不要求特别的亲和性策略</td>
+</tr>
+<tr>
+<td style="text-align:center">IrqPolicyAllCloseProcessors</td>
+<td>无</td>
+</tr>
+<tr>
+<td style="text-align:center">IrqPolicyOneCloseProcessor</td>
+<td>无</td>
+</tr>
+<tr>
+<td style="text-align:center">IrqPolicyAllProcessorsInMachine</td>
+<td>该中断可以由机器上任一可用的处理器处理</td>
+</tr>
+<tr>
+<td style="text-align:center">IrqPolicySpecifiedProcessors</td>
+<td>该中断只能由注册表值AssignmentSetOverride下的亲和性掩码中指定的某个处理器来处理</td>
+</tr>
+<tr>
+<td style="text-align:center">IrqPolicySpreadMessagesAcrossAllProcessors</td>
+<td>不同的基于消息信号的中断，在一组最优先的，符合条件的处理器集合之间进行分发</td>
+</tr>
+<tr>
+<td style="text-align:center">IqrPriorityUndefined</td>
+<td>设备不要求任何特别的优先级，它接收默认的优先级</td>
+</tr>
+<tr>
+<td style="text-align:center">IqrPriorityLow</td>
+<td>设备可以容忍高的延迟，应该接收一个低于普通级别的IRQL</td>
+</tr>
+<tr>
+<td style="text-align:center">IrqPriorityNormal</td>
+<td>设备期望一个平均的延迟，它接收一个与中断向量关联的默认IRQL</td>
+</tr>
+<tr>
+<td style="text-align:center">IrqPriorityHigh</td>
+<td>设备要求尽可能小的延迟，它接收一个超过其常规分配到的更高的IRQL</td>
+</tr>
+</tbody>
+</table>
+
+  </section>
+
+  <section class="post-comments">
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    <!-- UY BEGIN -->
+		<div id="uyan_frame"></div>
+		<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2155514"></script>
+	<!-- UY END -->
+</section>
 
 
-</div>
+</article>
+
+
             <footer class="footer">
 
     <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
@@ -320,6 +322,18 @@ classes that you can use:
 
 
     
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
     
     
     <!--kill ie6 -->
