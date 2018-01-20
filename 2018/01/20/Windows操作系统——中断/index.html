@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      Windows操作系统——中断 | MinAungLe 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="MinAungLe">
+    
+    
+
+    <meta name="description" content="##中断分发硬件产生的中断往往是由I/O设备激发的，当这些设备需要服务时，它们以中断的方式通知处理器系统软件也可能产生中断，内核可能会激发一个软件中断来触发线程分发过程，以及异步地打断一个线程的执行，内核也可以禁止中断，以使处理器不会被中断，但是它只在很少情况下这么做（正操纵中断控制器，分发异常）内核安装了中断陷阱处理器来响应设备中断，中断陷阱处理器或将控制权传递给一个负责处理该中断的外部例程（I">
+<meta name="keywords" content="系统中断">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows操作系统——中断 | MinAungLe">
+<meta property="og:url" content="http://yoursite.com/2018/01/20/Windows操作系统——中断/index.html">
+<meta property="og:site_name" content="MinAungLe">
+<meta property="og:description" content="##中断分发硬件产生的中断往往是由I/O设备激发的，当这些设备需要服务时，它们以中断的方式通知处理器系统软件也可能产生中断，内核可能会激发一个软件中断来触发线程分发过程，以及异步地打断一个线程的执行，内核也可以禁止中断，以使处理器不会被中断，但是它只在很少情况下这么做（正操纵中断控制器，分发异常）内核安装了中断陷阱处理器来响应设备中断，中断陷阱处理器或将控制权传递给一个负责处理该中断的外部例程（I">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2018/01/20/img/x86中断请求级别.png">
+<meta property="og:image" content="http://yoursite.com/2018/01/20/img/x64与IA64中断请求级别.png">
+<meta property="og:updated_time" content="2018-01-20T06:07:51.716Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Windows操作系统——中断 | MinAungLe">
+<meta name="twitter:description" content="##中断分发硬件产生的中断往往是由I/O设备激发的，当这些设备需要服务时，它们以中断的方式通知处理器系统软件也可能产生中断，内核可能会激发一个软件中断来触发线程分发过程，以及异步地打断一个线程的执行，内核也可以禁止中断，以使处理器不会被中断，但是它只在很少情况下这么做（正操纵中断控制器，分发异常）内核安装了中断陷阱处理器来响应设备中断，中断陷阱处理器或将控制权传递给一个负责处理该中断的外部例程（I">
+<meta name="twitter:image" content="http://yoursite.com/2018/01/20/img/x86中断请求级别.png">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">MinAungLe</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+        <p class="panel-cover__description">
+          Fly_Pwn
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+<nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+    
+      <!-- Github 
+      <li class="navigation__item">
+        <a href="https://github.com/someus" title="Huno on GitHub">
+          <i class='icon icon-social-github'></i>
+          <span class="label">GitHub</span>
+        </a>
+      </li>-->
+    
+
+    
+      <!-- Github -->
+      <li class="navigation__item">
+        <a href="https://github.com/MinAungLe" title="MinAungLe on GitHub">
+          <i class='icon icon-social-github'></i>
+          <span class="label">GitHub</span>
+        </a>
+      </li>
+
+      <li class="navigation__item">
+        <a href="https://weibo.com/u/6451987031/home?leftnav=1" title="MinAungLe on Weibo">
+          <i class='icon cs-icon-weibo'></i>
+          <span class="label">Weibo</span>
+        </a>
+      </li>
+
+    
+
+    <!-- China social icon -->
+    <!--
+    
+      <li class="navigation__item">
+        <a href="" title="">
+          <i class='icon cs-icon-douban'></i>
+          <span class="label">Douban</span>
+        </a>
+      </li>
+
+      
+
+    -->
+
+
+
+  </ul>
+</nav>
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">Windows操作系统——中断</h1>
+
+
+
+    
+
+    <div class="post-meta">
+      <time datetime="2018-01-20" class="post-meta__date date">2018-01-20</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+            <font class="categories">
+            &#8226; 分类:
+            <a class="categories-link" href="/categories/Windows内核/">Windows内核</a>
+            </font>
+          
+
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="/tags/系统中断/">系统中断</a>
+            </font>
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>##中断分发<br>硬件产生的中断往往是由I/O设备激发的，当这些设备需要服务时，它们以中断的方式通知处理器<br>系统软件也可能产生中断，内核可能会激发一个软件中断来触发线程分发过程，以及异步地打断一个线程的执行，内核也可以禁止中断，以使处理器不会被中断，但是它只在很少情况下这么做（正操纵中断控制器，分发异常）<br>内核安装了中断陷阱处理器来响应设备中断，中断陷阱处理器或将控制权传递给一个负责处理该中断的外部例程（ISR），或者传递给一个响应该中断的内部内核例程，设备驱动程序提供了ISR来处理设备中断，而内核则为其他类型的中断提供了中断处理例程</p>
+<p>###硬件中断处理<br>外部I/O中断进入到中断控制器的一根线上，该控制器接着在某一根线上中断处理器，处理器一旦被中断，就会询问控制器以获得此<strong>中断请求(IRQ)</strong>，中断控制器将该IRQ转译为一个中断号，利用该编号在<strong>中断分发表(IDT)</strong>这个结构中找到一个IDT项，并且将控制权传递给恰当的中断分发例程</p>
+<p>####x86中断控制器<br>绝大多数x86系统依赖于i8259A可编程中断控制器(PIC)或者依赖于i82489高级可编程中断控制器(APIC)的某个变种<br>i8259A PIC只用在单处理器系统上，有八根中断线</p>
+<p>####x64中断控制器<br>由于系统兼容性，x64系统必须提供与x86系统同样的中断控制器，但是，x64系统无法运行在不具有APIC的系统上</p>
+<p>####IA64中断控制器<br>IA64体系构架依赖于精简的高级可编程中断控制器(SAPIC)</p>
+<p>####中断请求级别(IRQL)<br>Windows系统强制使用自己的中断优先级方案，即<strong>中断请求级别(IRQL)</strong><br>内核位软件中断定义了一组标准的IRQL，HAL将硬件中断信号映射为IRQL<br>x86中断请求级别(0-31)<br><img src="../img/x86中断请求级别.png" alt="x86中断请求级别"><br>x64与IA64中断请求级别<br><img src="../img/x64与IA64中断请求级别.png" alt="x86中断请求级别"><br>中断是按照优先级处理的，高优先级的中断会抢占低优先级中断的执行权，当一个高优先级中断发生时，处理器把被中断的线程状态保存，并调用与该中断相关的陷阱分发器，提升IRQL，并调用该中断的服务例程，服务例程执行完后，恢复保存的线程状态，被中断线程从原来停止的地方恢复运行<br>与线程调度优先级不同，IRQL优先级有着完全不同的含义，调度优先级石先成的一个属性，而IRQL则是中断源的一个属性<br>IRQL也被用来实现对某些内核模式数据结构的同步访问，内核模式的线程运行时，它或者通过调用<em>KeRaiseIrql</em>或<em>KeLowerIrql</em>直接地提升或降低处理器的IRQL，或者通过调用那些获取内核同步对象的函数间接地提升或降低处理器的IRQL<br>中断源的IRQL高于处理器当前的级别，则从该源处发生的中断会打断处理器<br>中断源的IRQL等于或低于当前的级别，则这样的中断会被<strong>屏蔽</strong>，直到有一个正在执行的线程降低IRQL级别为止<br>PIC访问的性能优化——<strong>延迟IRQL</strong>，如果当IRQL被提升时没有低优先级中断发生，则HAL不需要修改PIC<br>改变处理器的IRQL只能在内核模式下进行，用户模式下的线程不能改变处理器的IRQL，意味着处理器正在执行用户模式代码时，其IRQL总是在被动级别上，只有处理器正在执行内核模式代码时其IRQL才可能更高<br>内核通过发出一个<strong>处理器间的中断(IPI)</strong>，使另一处理器执行某个任务<br>内核使用软件中断来激发线程调度，以及异步地打断一个线程的执行<br>     “提升IRQL会阻塞同一级别或者更低级别中断”有一个例外，如果一个线程将IRQL提升至APC级别，然后由于一个Diapatch/DPC级别的中断而被重新调度，则系统哟可能在新被调度的线程上递交一个APC级别的中断，因此，APC级别可以看作是线程局部的IRQL</p>
+<p>####将中断映射到IRQL<br>Windows所在的体系架构并没有从硬件上实现IRQL概念<br>在Windows中，<strong>总线驱动程序</strong>确定总线上出现了哪些设备，以及哪些中断可以分配给每一个设备，即插即用管理器在考虑所有其他设备的可接受的中断分配方案以后，确定为每个设备分配哪个中断，由中断仲裁者将中断映射到对应的IRQL<br>在ACPI系统上，对于一个给定的中断，HAL将该IRQ对应的中断向量除以16作为其IRQL<br>IRQ的中断向量，由系统中中断控制器的类型决定</p>
+<p>####预定义的IRQL<br>预定义的IRQL的使用:</p>
+<ul>
+<li>内核仅当它在KeBugCheckEx中停止了系统并屏蔽了所有中断时，才会使用高端级别的IRQL</li>
+<li>处理器间的中断级别被用于向另一个处理器请求执行某个动作</li>
+</ul>
+<h4 id="中断对象"><a href="#中断对象" class="headerlink" title="中断对象"></a>中断对象</h4><p>内核提供了一种可移植的机制，使得驱动设备程序可以为它们的设备注册ISR，这种机制就是一个称为<strong>中断对象</strong>的内核控制对象，其中包含了一个设备的ISR与特定级别中断关联的信息(ISR地址，该设备中断所在的IRQL，与之关联的IDT项)<br>中断对象被初始化时，少量的汇编代码(<strong>分发代码-调用实际的中断分发器</strong>)将被从中断处理模块<em>KiInterruptTemplate</em>中复制到对象中，中断发生时执行这些代码<br>在多处理器的系统上，内核会为每个CPU分配一个中断对象，并初始化，使该CPU上的本地APIC能够接受特定的中断</p>
+<h3 id="Windows和实时处理过程"><a href="#Windows和实时处理过程" class="headerlink" title="Windows和实时处理过程"></a>Windows和实时处理过程</h3><p>使用中断对象来注册ISR，可以避免设备驱动程序直接操纵中断硬件<br>通过使用中断对象，内核可以将该ISR的执行过程与设备驱动程序中其他可能与ISR共享的部分同步</p>
+<h3 id="基于线的中断与基于消息信号的中断"><a href="#基于线的中断与基于消息信号的中断" class="headerlink" title="基于线的中断与基于消息信号的中断"></a>基于线的中断与基于消息信号的中断</h3><p>这一中断为了解决IRQ线的数量导致的中断数量和高中断延迟<br>在MSI模型中，一个设备通过往一个特定的内存地址写数据的做法，向它的驱动程序递交消息，这一写操作会引发一个中断，然后Windows调用ISR把消息的内容和该消息被递交的地址传给ISR</p>
+<h3 id="中断亲和性和优先级"><a href="#中断亲和性和优先级" class="headerlink" title="中断亲和性和优先级"></a>中断亲和性和优先级</h3><p>Windows允许驱动程序开发和管理员在一定程度上控制处理器亲和性(选择一个或一组处理器允许接收相应的中断)和亲和性策略(如何选择处理器，以及在一个组中选择哪些处理器)，它支持一种基于IRQL选择的中断优先级机制<br>| 策略                                       | 含义                                       |<br>| —————————————- | —————————————- |<br>| IrqPolicyMachineDefault                  | 该设备不要求特别的亲和性策略                           |<br>| IrqPolicyAllCloseProcessors              |                                          |<br>| IrqPolicyOneCloseProcessor               |                                          |<br>| IrqPolicyAllProcessorsInMachine          | 该中断可以由机器上任一可用的处理器处理                      |<br>| IrqPolicySpecifiedProcessors             | 该中断只能由注册表值AssignmentSetOverride下的亲和性掩码中指定的某个处理器来处理 |<br>| IrqPolicySpreadMessagesAcrossAllProcessors | 不同的基于消息信号的中断，在一组最优先的，符合条件的处理器集合之间进行分发    |<br>| IqrPriorityUndefined                     | 设备不要求任何特别的优先级，它接收默认的优先级                  |<br>| IqrPriorityLow                           | 设备可以容忍高的延迟，应该接收一个低于普通级别的IRQL             |<br>| IrqPriorityNormal                        | 设备期望一个平均的延迟，它接收一个与中断向量关联的默认IRQL          |<br>| IrqPriorityHigh                          | 设备要求尽可能小的延迟，它接收一个超过其常规分配到的更高的IRQL        |</p>
+<h4 id="软件中断"><a href="#软件中断" class="headerlink" title="软件中断"></a>软件中断</h4><p>产生软件中断的任务:</p>
+<ul>
+<li>激发线程分发</li>
+<li>并非时间紧急的中断处理</li>
+<li>处理定时器到期</li>
+<li>在特定线程的环境中异步的执行一个过程</li>
+<li>支持异步I/O操作</li>
+</ul>
+<p><strong>分发或者延迟过程调用(DPC)中断</strong><br>  在某些情况下，系统将处理器的IRQL提升到DPC/Dispatch或更高级别上，来禁止另外的软件中断和线程分发动作<br>  在DPC/Dispatch的IRQL上，内核也会处理延迟的过程调用(DPC)，DPC是完成某项系统任务的函数——这一系统任务不像当前任务那样时间紧迫，这些函数之所以称为延迟的，是因为它们可能不会立即执行<br>  DPC是通过<strong>DPC对象(一种内核控制对象)</strong>来表示的，对于用户模式程序是不可见的，对于设备驱动和其他的系统代码是可见的<br>  DPC对象包含内核处理该DPC中断时将要调用的系统函数的地址<br>  默认情况下，内核把DPC对象放在发出该DPC请求的处理器的DPC队列末尾<br>  处理器的IRQL要从DPC/Dispatch或者更高级别降到某个低级别时，内核就会处理DPC，此时会保持该处理器的IRQL在DPC/Dispatch级别上，只有当DPC队列为空时，内核才让IRQL降低到DPC/Dispatch级别以下，让正常的线程执行过程继续进行<br>  当DPC定位在其他的CPU上(级别为高级或者中-高级)，内核通过给目标CPU发送一个分发<strong>IPI</strong>来清空CPU的DPC队列，只有当目标CPU空闲时才可以<br>  优先级为中级或者低级时，目标处理器上排队的DPC的数量必须超过一定的阈值，这样内核才会激发DPC/Dispatch中断<br>  DPC的优先级中，高级和中-高级看起来是相等的优先级，区别在于高级中断从头部插入链表队列，中-高级中断从尾部插入链表队列<br>  <strong>DPC中断产生规则</strong><br>| DPC优先级 |            DPC被定位在ISR的处理器上            | DPC被定位在另一个处理器上            |<br>| :—-: | :———————————–: | ————————- |<br>|   低级   | DPC队列长度超过最大DPC队列长度，或者DPC请求率小于最小DPC请求率 | DPC队列长度超过最大DPC队列长度，或者系统空间 |<br>|   中级   |                 总是激发                  | DPC队列长度超过最大DPC队列长度，或者系统空间 |<br>|  中-高级  |                 总是激发                  | 目标处理器空闲                   |<br>|   高级   |                 总是激发                  | 目标处理器空闲                   |<br>内核使用DPC来处理时限到期事件，在系统时钟的每一个滴答点上，都会发生时钟IRQL级别的中断，时钟中断处理器对系统时间进行更新，然后将一个记录了当前线程已运行多长时间的计数器递减，当计数器减到0时，该线程的时限到期，内核可能需要重新调度该处理器(更低由优先级任务)<br>时钟中断处理器将一个DPC插入队列中以便激发线程分发过程，然后结束它的工作并降低该处理器的IRQL<br>DPC中断的优先级低于设备中断，任何在时钟中断之前出现并且尚未处理的设备中断，都将在DPC中断发生之前被处理<br>针对长时间运行DPC的驱动程序，Windows提供<strong>线程化DPC</strong><br>线程化DPC不能访问换页的内存，不能执行分发器等待操作，不能假设运行的IRQL，绝对不能使用<strong><em>KeAcquirelReleaseSpinLockAtDpcLevel</em></strong></p>
+<p><strong>异步过程调用(APC)中断</strong><br>异步过程调用提供了一种在特定用户线程环境(从而也是在特定的进程地址空间)中执行用户程序和系统代码的途径<br>APC例程运行在低于DPC/Dispatch级别的IRQL级别上，可以访问资源，等待对象句柄，引发页面错误，以及调用系统服务<br>APC由内核控制对象(<strong>APC对象</strong>)来描述，正在等待执行的APC驻留在有内核管理的<strong>APC队列</strong>中，APC队列与特定线程相关，每个线程有自己的APC队列(DPC队列是系统范围内的)<br>两种APC类型:</p>
+<ul>
+<li>内核模式(运行在APC级别上)</li>
+<li>用户模式(运行在被动级别上)<br>内核模式APC不需要从目标线程获得”许可”就可以运行在该线程的环境中<br>内核模式APC也有两种:</li>
+<li>特殊的APC在APC级别上执行，并且允许APC例程修改某些APC参数</li>
+<li>普通的APC在被动级别上执行，并且接受被特殊APC例程修改过的参数<br>线程想要禁止普通类型的APC，唯一的办法是调用<em>KeEnterCriticalRegion</em>，它会设置该线程的<strong>KTHREAD</strong>结构中的<em>KernelApcDisable</em>域<br>APC类型的插入和交付行为<br>| APC类型      | 插入行为                    | 交付行为 |<br>| ———- | ———————– | —- |<br>| 特殊(内核)     | 插在内核模式APC列表尾部           |      |<br>| 普通(内核)     | 最后一个特殊APC尾部，所有其他普通APC头部 |      |<br>| 普通(用户)     | 插在用户模式APC列表尾部           |      |<br>| 普通(用户)线程退出 | 插在用户模式APC列表头部           |      |<br>执行体使用内核模式的APC来完成那些必须在特定线程的地址空间(执行环境)中才能完成的操作系统任务<br>内核模式的APC一个重要用途与线程的挂起和终止有关，内核使用APC来询问线程环境，以及终止目标线程<br>有几个Windows API用到了用户模式APC，<em>ReadFileEx</em>和<em>WriteFileEx</em>函数允许调用者指定一个完成例程，当I/O操作完成时该完成例程就会被调用，I/O完成机制是通过在发起I/O的线程里插入一个APC来完成的<br>当APC被插入线程队列时，对完成例程的回调动作并不一点发生，只有当一个线程处于<strong>可警醒的的等待状态</strong>时，用户模式APC才可能交付给该线程<br>线程有两种方式进入等待状态:</li>
+<li>等待一个对象句柄并指定它的等待是可警醒的(使用<em>WaitForMultipleObjectEx</em>函数)</li>
+<li>直接测试是否有未处理的APC(使用<em>SleepEx</em>)<br>在这两种情况下，如果有一个用户模式的APC在等待处理，内核就会警告该线程，将控制权传递给APC例程，，该线程进入等待状态，当APC例程完成后再恢复线程运行<br>内核模式的APC运行在APC级别上，用户模式的APC运行在被动级别上</li>
+</ul>
+
+  </section>
+
+  <section class="post-comments">
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    <!-- UY BEGIN -->
+		<div id="uyan_frame"></div>
+		<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2155514"></script>
+	<!-- UY END -->
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
