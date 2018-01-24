@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      Windows API直接访问的执行体对象(附) | MinAungLe 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="MinAungLe">
+    
+    
+
+    <meta name="description" content="对象类型 含义     Process 执行一组线程对象所必需的虚拟地址空间和控制信息   Thread 进程内部的一个可执行实体   Job 指一组进程，通过作业机制，可以像单个实体那样来管理他们   Section 共享内存的一个区域(文件映射对象)   File 一个已打开的文件或者I/O设备的实例   Token 一个进程或者线程的安全轮廓(安全ID，用户权限等)   Event 一">
+<meta name="keywords" content="执行体对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows API直接访问的执行体对象(附) | MinAungLe">
+<meta property="og:url" content="http://yoursite.com/2018/01/25/WindowsAPI直接访问的执行体对象/index.html">
+<meta property="og:site_name" content="MinAungLe">
+<meta property="og:description" content="对象类型 含义     Process 执行一组线程对象所必需的虚拟地址空间和控制信息   Thread 进程内部的一个可执行实体   Job 指一组进程，通过作业机制，可以像单个实体那样来管理他们   Section 共享内存的一个区域(文件映射对象)   File 一个已打开的文件或者I/O设备的实例   Token 一个进程或者线程的安全轮廓(安全ID，用户权限等)   Event 一">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-01-24T16:40:49.475Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Windows API直接访问的执行体对象(附) | MinAungLe">
+<meta name="twitter:description" content="对象类型 含义     Process 执行一组线程对象所必需的虚拟地址空间和控制信息   Thread 进程内部的一个可执行实体   Job 指一组进程，通过作业机制，可以像单个实体那样来管理他们   Section 共享内存的一个区域(文件映射对象)   File 一个已打开的文件或者I/O设备的实例   Token 一个进程或者线程的安全轮廓(安全ID，用户权限等)   Event 一">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">MinAungLe</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+        <p class="panel-cover__description">
+          Fly_Pwn
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+<nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+    
+      <!-- Github 
+      <li class="navigation__item">
+        <a href="https://github.com/someus" title="Huno on GitHub">
+          <i class='icon icon-social-github'></i>
+          <span class="label">GitHub</span>
+        </a>
+      </li>-->
+    
+
+    
+      <!-- Github -->
+      <li class="navigation__item">
+        <a href="https://github.com/MinAungLe" title="MinAungLe on GitHub">
+          <i class='icon icon-social-github'></i>
+          <span class="label">GitHub</span>
+        </a>
+      </li>
+
+      <li class="navigation__item">
+        <a href="https://weibo.com/u/6451987031/home?leftnav=1" title="MinAungLe on Weibo">
+          <i class='icon cs-icon-weibo'></i>
+          <span class="label">Weibo</span>
+        </a>
+      </li>
+
+    
+
+    <!-- China social icon -->
+    <!--
+    
+      <li class="navigation__item">
+        <a href="" title="">
+          <i class='icon cs-icon-douban'></i>
+          <span class="label">Douban</span>
+        </a>
+      </li>
+
+      
+
+    -->
+
+
+
+  </ul>
+</nav>
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">Windows API直接访问的执行体对象(附)</h1>
+
+
+
+    
+
+    <div class="post-meta">
+      <time datetime="2018-01-25" class="post-meta__date date">2018-01-25</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+            <font class="categories">
+            &#8226; 分类:
+            <a class="categories-link" href="/categories/Windows内核/">Windows内核</a>
+            </font>
+          
+
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="/tags/执行体对象/">执行体对象</a>
+            </font>
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <table>
+<thead>
+<tr>
+<th style="text-align:center"><strong>对象类型</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Process</td>
+<td>执行一组线程对象所必需的虚拟地址空间和控制信息</td>
+</tr>
+<tr>
+<td style="text-align:center">Thread</td>
+<td>进程内部的一个可执行实体</td>
+</tr>
+<tr>
+<td style="text-align:center">Job</td>
+<td>指一组进程，通过作业机制，可以像单个实体那样来管理他们</td>
+</tr>
+<tr>
+<td style="text-align:center">Section</td>
+<td>共享内存的一个区域(文件映射对象)</td>
+</tr>
+<tr>
+<td style="text-align:center">File</td>
+<td>一个已打开的文件或者I/O设备的实例</td>
+</tr>
+<tr>
+<td style="text-align:center">Token</td>
+<td>一个进程或者线程的安全轮廓(安全ID，用户权限等)</td>
+</tr>
+<tr>
+<td style="text-align:center">Event</td>
+<td>一种具有持久性状态的对象(有信号或者无信号的)，可用于同步或者通知</td>
+</tr>
+<tr>
+<td style="text-align:center">Semaphore</td>
+<td>信号量是一个计数器，提供资源门控能力，对于该信号量所保护的资源只允许某个最大数目的线程访问</td>
+</tr>
+<tr>
+<td style="text-align:center">Mutex</td>
+<td>用于顺序访问同一个资源的一种同步机制</td>
+</tr>
+<tr>
+<td style="text-align:center">Timer</td>
+<td>一种当固定长度时间过去通知某个线程的机制</td>
+</tr>
+<tr>
+<td style="text-align:center">IoCompletion</td>
+<td>使线程能够将”I/O完成通知”进出队列的一种方法(I/O完成端口)</td>
+</tr>
+<tr>
+<td style="text-align:center">Key</td>
+<td>一种引用注册表中数据的机制</td>
+</tr>
+<tr>
+<td style="text-align:center">Directory</td>
+<td>对象管理器名字空间中的虚拟目录，负责包含其他的对象或对象目录</td>
+</tr>
+<tr>
+<td style="text-align:center">TpWorkerFactory</td>
+<td>负责执行一组特定任务的线程集合，内核可以管理将在该队列上执行的工作项目的数量，负责这一工作的线程数量，以及工作者线程的动态创建和终止，并遵从调用者的一些限制</td>
+</tr>
+<tr>
+<td style="text-align:center">TmRm</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">WindowsStation</td>
+<td>包含一个剪贴板，一组全局原子和一组桌面对象</td>
+</tr>
+<tr>
+<td style="text-align:center">Desktop</td>
+<td>一个包含在窗口内部的对象，它有一个逻辑显示器表面，包含了窗口，菜单和钩子</td>
+</tr>
+<tr>
+<td style="text-align:center">PowerRequest</td>
+<td>该对象和一个线程关联在一起，该线程执行<em>SetThreadExecutionState</em>请求指定的电源改变</td>
+</tr>
+<tr>
+<td style="text-align:center">EtwConsumer</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">EtwRegidtration</td>
+<td>代表一个注册对象，它与某个用户模式(或内核模式)ETW提供者关联</td>
+</tr>
+</tbody>
+</table>
+
+  </section>
+
+  <section class="post-comments">
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    <!-- UY BEGIN -->
+		<div id="uyan_frame"></div>
+		<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2155514"></script>
+	<!-- UY END -->
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
