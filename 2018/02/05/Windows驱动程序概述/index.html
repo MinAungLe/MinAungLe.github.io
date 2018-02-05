@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      Windows驱动程序概述 | MinAungLe 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="MinAungLe">
+    
+    
+
+    <meta name="description" content="Windows驱动概述Windows驱动程序分为两种:  不支持即插即用功能的NT驱动(包含NTDDK.h头文件) 支持即插即用功能的WDM驱动(包含WDM.h头文件)  在Windows驱动程序开发中，所有程序的函数和变量要被指明加载到分页内存还是非分页内存 Windows操作驱动的基本概念Windows API分为三类：  USER函数：这类函数管理窗口，菜单，对话框和控件 GDI函数：这类函">
+<meta name="keywords" content="驱动概述">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows驱动程序概述 | MinAungLe">
+<meta property="og:url" content="http://yoursite.com/2018/02/05/Windows驱动程序概述/index.html">
+<meta property="og:site_name" content="MinAungLe">
+<meta property="og:description" content="Windows驱动概述Windows驱动程序分为两种:  不支持即插即用功能的NT驱动(包含NTDDK.h头文件) 支持即插即用功能的WDM驱动(包含WDM.h头文件)  在Windows驱动程序开发中，所有程序的函数和变量要被指明加载到分页内存还是非分页内存 Windows操作驱动的基本概念Windows API分为三类：  USER函数：这类函数管理窗口，菜单，对话框和控件 GDI函数：这类函">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-05T14:00:52.741Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Windows驱动程序概述 | MinAungLe">
+<meta name="twitter:description" content="Windows驱动概述Windows驱动程序分为两种:  不支持即插即用功能的NT驱动(包含NTDDK.h头文件) 支持即插即用功能的WDM驱动(包含WDM.h头文件)  在Windows驱动程序开发中，所有程序的函数和变量要被指明加载到分页内存还是非分页内存 Windows操作驱动的基本概念Windows API分为三类：  USER函数：这类函数管理窗口，菜单，对话框和控件 GDI函数：这类函">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">MinAungLe</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+        <p class="panel-cover__description">
+          Fly_Pwn
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+<nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+    
+      <!-- Github 
+      <li class="navigation__item">
+        <a href="https://github.com/someus" title="Huno on GitHub">
+          <i class='icon icon-social-github'></i>
+          <span class="label">GitHub</span>
+        </a>
+      </li>-->
+    
+
+    
+      <!-- Github -->
+      <li class="navigation__item">
+        <a href="https://github.com/MinAungLe" title="MinAungLe on GitHub">
+          <i class='icon icon-social-github'></i>
+          <span class="label">GitHub</span>
+        </a>
+      </li>
+
+      <li class="navigation__item">
+        <a href="https://weibo.com/u/6451987031/home?leftnav=1" title="MinAungLe on Weibo">
+          <i class='icon cs-icon-weibo'></i>
+          <span class="label">Weibo</span>
+        </a>
+      </li>
+
+    
+
+    <!-- China social icon -->
+    <!--
+    
+      <li class="navigation__item">
+        <a href="" title="">
+          <i class='icon cs-icon-douban'></i>
+          <span class="label">Douban</span>
+        </a>
+      </li>
+
+      
+
+    -->
+
+
+
+  </ul>
+</nav>
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">Windows驱动程序概述</h1>
+
+
+
+    
+
+    <div class="post-meta">
+      <time datetime="2018-02-05" class="post-meta__date date">2018-02-05</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+            <font class="categories">
+            &#8226; 分类:
+            <a class="categories-link" href="/categories/Windows-驱动/">Windows 驱动</a>
+            </font>
+          
+
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="/tags/驱动概述/">驱动概述</a>
+            </font>
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <h1 id="Windows驱动概述"><a href="#Windows驱动概述" class="headerlink" title="Windows驱动概述"></a>Windows驱动概述</h1><p>Windows驱动程序分为两种:</p>
+<ul>
+<li>不支持即插即用功能的NT驱动(包含NTDDK.h头文件)</li>
+<li>支持即插即用功能的WDM驱动(包含WDM.h头文件)</li>
+</ul>
+<p>在Windows驱动程序开发中，所有程序的函数和变量要被指明加载到分页内存还是非分页内存</p>
+<h1 id="Windows操作驱动的基本概念"><a href="#Windows操作驱动的基本概念" class="headerlink" title="Windows操作驱动的基本概念"></a>Windows操作驱动的基本概念</h1><p>Windows API分为三类：</p>
+<ol>
+<li>USER函数：这类函数管理窗口，菜单，对话框和控件</li>
+<li>GDI函数：这类函数在物理设备上执行绘图操作</li>
+<li>KERNEL函数：这类函数管理非GUI资源</li>
+</ol>
+<h3 id="Native-API"><a href="#Native-API" class="headerlink" title="Native API"></a>Native API</h3><p>大部分Win32子系统的API都是通过Native API的函数实现的，所有Native API都是在Ntdll.dll中实现</p>
+<h3 id="内核"><a href="#内核" class="headerlink" title="内核"></a>内核</h3><p>内核提供的功能</p>
+<ul>
+<li>对内核对象的支持</li>
+<li>对线程的调度</li>
+<li>对多处理器同步的支持</li>
+<li>中断处理函数的支持</li>
+<li>对错误陷阱的支持</li>
+<li>对其他硬件特殊功能的支持</li>
+</ul>
+<h2 id="加载NT式驱动"><a href="#加载NT式驱动" class="headerlink" title="加载NT式驱动"></a>加载NT式驱动</h2><p>在HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services中添加新项目，项目名称为驱动名称<br>添加子键：<br>DisplayName：在设备管理器中显示<br>ImagePath：要以\??\开头，表示符号链接<br>Start<br>Type：为1表示在内核模式下下载</p>
+<h3 id="SCM服务组件和Windows服务"><a href="#SCM服务组件和Windows服务" class="headerlink" title="SCM服务组件和Windows服务"></a>SCM服务组件和Windows服务</h3><p>加载和卸载NT驱动分为四个步骤 :</p>
+<ol>
+<li>为NT驱动创建新的服务</li>
+<li>开启此项服务</li>
+<li>关闭此项服务</li>
+<li>删除NT驱动所创建的服务</li>
+</ol>
+<p>以上四步都是通过调用SCM组件的服务来实现的</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//打开SCM管理器函数，用于SCM初始化</span></span><br><span class="line"><span class="function">SC_HANDLE <span class="title">OpenSCManager</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	LPCTSTR lpMachineName,	<span class="comment">//计算机名称</span></span></span></span><br><span class="line"><span class="function"><span class="params">	LPCTSTR ipDatabaseName,	<span class="comment">//SCM数据库名称</span></span></span></span><br><span class="line"><span class="function"><span class="params">	DWORD dwDesiredAccess	<span class="comment">//使用权限</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>lpMachineName：指定计算机名称，如果未NULL，代表本机<br>ipDatabaseName：指定SCM数据的名称，如果为NULL代表使用缺省数据库<br>dwDesiredAccess：使用权限，一般设置为SC_MANAGER_ALL_ACCEDD<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//关SCM管理器句柄，用于SCM的清除工作</span></span><br><span class="line"><span class="function">BOOL <span class="title">CloseServiceHandle</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	SC_HANDLE hSCObject	<span class="comment">//要关闭的SCM句柄</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>hSCObject：要关闭的SCM句柄<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建服务</span></span><br><span class="line"><span class="function">SC_HANDLE <span class="title">CreateService</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	SC_HANDLE hSCManager,		<span class="comment">//SCM管理器句柄</span></span></span></span><br><span class="line"><span class="function"><span class="params">	LPCTSTR lpServiceName,		<span class="comment">//服务名称，在设备管理器中看到的名称</span></span></span></span><br><span class="line"><span class="function"><span class="params">	LPCTSTR lpDispalyName,		<span class="comment">//服务显示出的名称</span></span></span></span><br><span class="line"><span class="function"><span class="params">	DWORD dwDesiredAccess,		<span class="comment">//打开权限</span></span></span></span><br><span class="line"><span class="function"><span class="params">	DWORD dwServiceType,		<span class="comment">//服务类型</span></span></span></span><br><span class="line"><span class="function"><span class="params">	DWORD dwStartType,			<span class="comment">//打开服务的时间</span></span></span></span><br><span class="line"><span class="function"><span class="params">	DWORD dwErrorControl,		<span class="comment">//错误处理代码</span></span></span></span><br><span class="line"><span class="function"><span class="params">	LPCTSTR lpBinaryPathName,	<span class="comment">//二进制文件的代码</span></span></span></span><br><span class="line"><span class="function"><span class="params">	LPCTSTR lpLoadOrderGroup,	<span class="comment">//开启服务的用户组</span></span></span></span><br><span class="line"><span class="function"><span class="params">	LPDWORD lpdwTagId,			<span class="comment">//输出验证标签</span></span></span></span><br><span class="line"><span class="function"><span class="params">	LPCTSTR lpDependencies,		<span class="comment">//所依赖的服务的名称</span></span></span></span><br><span class="line"><span class="function"><span class="params">	LPCTSTR lpServiceStartName,	<span class="comment">//用户账户名称</span></span></span></span><br><span class="line"><span class="function"><span class="params">	LPCTSTR lpPassword			<span class="comment">//用户口令</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>dwDesiredAccess：打开权限，一般设置为SERVICE_ALL_ACCESS<br>dwServiceType：服务类型，有以下两种选择</p>
+<ul>
+<li>SERVICE_FILE_SYSTEM_DRIVER:文件系统的驱动</li>
+<li>SERVICE_KERNEL_DRIVER:普通程序的驱动，一般用此项<br>dwStartType：打开服务的时间，有以下选择</li>
+<li>SERVICE_AUTO_START:驱动自动加载</li>
+<li>SERVICE_BOOT_START:被system loader加载，即系统启动前就被启动</li>
+<li>SERVICE_DEMAND_START:按照需要时启动，一般选择此项<br>dwErrorControl：错误处理代码，有以下选择</li>
+<li>SERVICE_ERROR_IGNORE:遇到错误全部忽略掉</li>
+<li>SERVICE_ERROR_NORMAL:遇到错误按照缺省办法处理</li>
+<li>SERVICE_ERROR_CRITICAL:增加对错误处理的校验，并提示出对话框，并且记录错误信息到log文件中</li>
+<li>lpBinaryPathName:服务所用的二进制代码，即编译后的驱动程序<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//打开服务</span></span><br><span class="line"><span class="function">SC_HANDLE <span class="title">Openservice</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	SC_HANDLE hSCMananer,	<span class="comment">//SCM数据库句柄</span></span></span></span><br><span class="line"><span class="function"><span class="params">	LPCTSTR lpServiceName,	<span class="comment">//服务名称</span></span></span></span><br><span class="line"><span class="function"><span class="params">	DWORD dwDesiredAccess	<span class="comment">//访问权限</span></span></span></span><br><span class="line"><span class="function"><span class="params">	)</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>hSCMananer：SCM管理器句柄，也就是OpenSCManager打开的句柄<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//控制服务</span></span><br><span class="line"><span class="function">BOOL <span class="title">ControlService</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	SC_HANDLE hService,					<span class="comment">//服务的句柄</span></span></span></span><br><span class="line"><span class="function"><span class="params">	DWORD dwControl,					<span class="comment">//控制码</span></span></span></span><br><span class="line"><span class="function"><span class="params">	LPSERVICE_STATUS lpServiceStatus	<span class="comment">//返回状态</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>dwControl:对服务的控制码，常用控制码如下：</p>
+<ul>
+<li>SERVICE_CONTROL_CONTINUE:针对暂停的服务发出继续运行的命令</li>
+<li>SERVICE_CONTROL_PAUSE:针对正在运行的服务发出暂停的命令</li>
+<li>SERVICE_CONTROL_STOP:针对运行的服务发出停止的命令</li>
+</ul>
+<h2 id="加载WDM式驱动"><a href="#加载WDM式驱动" class="headerlink" title="加载WDM式驱动"></a>加载WDM式驱动</h2><p>WDM式驱动增加了对即插即用的支持，安装时需要提供一个INF文件进行配合<br>WDM式驱动程序安装会改变注册表的三方面：</p>
+<ol>
+<li>硬件子键：位于HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enum</li>
+<li>类子键：位于HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class</li>
+<li>服务子键：位于HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services</li>
+</ol>
+
+  </section>
+
+  <section class="post-comments">
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    <!-- UY BEGIN -->
+		<div id="uyan_frame"></div>
+		<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2155514"></script>
+	<!-- UY END -->
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
