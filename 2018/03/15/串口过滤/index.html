@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      串口过滤 | MinAungLe 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="MinAungLe">
+    
+    
+
+    <meta name="description" content="设备绑定的内核API进行过滤的最主要方法是对一个设备对象(Device Object)进行绑定通过编程可以生成一个虚拟的设备对象，并绑定在一个真实的设备上，一旦绑定，则本来操作系统发送给真实设备的请求，会首先发送到这个虚拟设备上12345678910111213141516171819//将设备绑定到自己的虚拟设备上，被绑设备必须有名称NTSTATUS IoAttachDevice(  _In_">
+<meta name="keywords" content="串口">
+<meta property="og:type" content="article">
+<meta property="og:title" content="串口过滤 | MinAungLe">
+<meta property="og:url" content="http://yoursite.com/2018/03/15/串口过滤/index.html">
+<meta property="og:site_name" content="MinAungLe">
+<meta property="og:description" content="设备绑定的内核API进行过滤的最主要方法是对一个设备对象(Device Object)进行绑定通过编程可以生成一个虚拟的设备对象，并绑定在一个真实的设备上，一旦绑定，则本来操作系统发送给真实设备的请求，会首先发送到这个虚拟设备上12345678910111213141516171819//将设备绑定到自己的虚拟设备上，被绑设备必须有名称NTSTATUS IoAttachDevice(  _In_">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-03-15T13:25:16.605Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="串口过滤 | MinAungLe">
+<meta name="twitter:description" content="设备绑定的内核API进行过滤的最主要方法是对一个设备对象(Device Object)进行绑定通过编程可以生成一个虚拟的设备对象，并绑定在一个真实的设备上，一旦绑定，则本来操作系统发送给真实设备的请求，会首先发送到这个虚拟设备上12345678910111213141516171819//将设备绑定到自己的虚拟设备上，被绑设备必须有名称NTSTATUS IoAttachDevice(  _In_">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">MinAungLe</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+        <p class="panel-cover__description">
+          Fly_Pwn
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+<nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+    
+      <!-- Github 
+      <li class="navigation__item">
+        <a href="https://github.com/someus" title="Huno on GitHub">
+          <i class='icon icon-social-github'></i>
+          <span class="label">GitHub</span>
+        </a>
+      </li>-->
+    
+
+    
+      <!-- Github -->
+      <li class="navigation__item">
+        <a href="https://github.com/MinAungLe" title="MinAungLe on GitHub">
+          <i class='icon icon-social-github'></i>
+          <span class="label">GitHub</span>
+        </a>
+      </li>
+
+      <li class="navigation__item">
+        <a href="https://weibo.com/u/6451987031/home?leftnav=1" title="MinAungLe on Weibo">
+          <i class='icon cs-icon-weibo'></i>
+          <span class="label">Weibo</span>
+        </a>
+      </li>
+
+    
+
+    <!-- China social icon -->
+    <!--
+    
+      <li class="navigation__item">
+        <a href="" title="">
+          <i class='icon cs-icon-douban'></i>
+          <span class="label">Douban</span>
+        </a>
+      </li>
+
+      
+
+    -->
+
+
+
+  </ul>
+</nav>
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">串口过滤</h1>
+
+
+
+    
+
+    <div class="post-meta">
+      <time datetime="2018-03-15" class="post-meta__date date">2018-03-15</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+            <font class="categories">
+            &#8226; 分类:
+            <a class="categories-link" href="/categories/Windows-驱动/">Windows 驱动</a>
+            </font>
+          
+
+          
+             &#8226; 标签:
+            <font class="tags">
+              <a class="tags-link" href="/tags/串口/">串口</a>
+            </font>
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <h3 id="设备绑定的内核API"><a href="#设备绑定的内核API" class="headerlink" title="设备绑定的内核API"></a>设备绑定的内核API</h3><p>进行过滤的最主要方法是对一个设备对象(Device Object)进行绑定<br>通过编程可以生成一个虚拟的设备对象，并绑定在一个真实的设备上，一旦绑定，则<strong>本来操作系统发送给真实设备的请求，会首先发送到这个虚拟设备上</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将设备绑定到自己的虚拟设备上，被绑设备必须有名称</span></span><br><span class="line"><span class="function">NTSTATUS <span class="title">IoAttachDevice</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_  PDEVICE_OBJECT  SourceDevice,		<span class="comment">//自己的虚拟设备</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _In_  PUNICODE_STRING TargetDevice,		<span class="comment">//被绑定的设备名称</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _Out_ PDEVICE_OBJECT  *AttachedDevice		<span class="comment">//被绑定的设备指针</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//根据设备对象指针进行绑定</span></span><br><span class="line"><span class="function">NTSTATUS <span class="title">IoAttachDeviceToDeviceStackSafe</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_  PDEVICE_OBJECT SourceDevice,		<span class="comment">//自己的虚拟设备</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _In_  PDEVICE_OBJECT TargetDevice,		<span class="comment">//要绑定的设备栈中的设备</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _Out_ PDEVICE_OBJECT *AttachedToDeviceObject	<span class="comment">//返回最终被绑定的设备</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//常用函数</span></span><br><span class="line"><span class="function">PDEVICE_OBJECT <span class="title">IoAttachDeviceToDeviceStack</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_ PDEVICE_OBJECT SourceDevice,			<span class="comment">//自己的虚拟设备</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _In_ PDEVICE_OBJECT TargetDevice			<span class="comment">//要绑定的设备栈中的设备</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<pre><code>进行设备绑定时，总是会绑定位于设备栈顶层的设备
+</code></pre><h3 id="生成过滤设备并绑定"><a href="#生成过滤设备并绑定" class="headerlink" title="生成过滤设备并绑定"></a>生成过滤设备并绑定</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//生成过滤设备</span></span><br><span class="line"><span class="function">NTSTATUS <span class="title">IoCreateDevice</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_     PDRIVER_OBJECT  DriverObject,	<span class="comment">//驱动对象指针</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _In_     ULONG           DeviceExtensionSize,	<span class="comment">//指定设备扩展的大小</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _In_opt_ PUNICODE_STRING DeviceName,	<span class="comment">//过滤设备一般没有名称(NULL)</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _In_     DEVICE_TYPE     DeviceType,	<span class="comment">//设备类型，与被绑定设备一致</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _In_     ULONG           DeviceCharacteristics,	<span class="comment">//设置设备对象属性</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _In_     BOOLEAN         Exclusive,	<span class="comment">//内核模式使用标志(FALSE)</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _Out_    PDEVICE_OBJECT  *DeviceObject	<span class="comment">//保存返回的对象地址</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//示例，生成设备并绑定</span></span><br><span class="line"><span class="function">NTSTATUS <span class="title">ToAttachDevice</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">				PDRIVER_OBJECT driver,		<span class="comment">//</span></span></span></span><br><span class="line"><span class="function"><span class="params">				PDRIVER_OBJECT oldobj,		<span class="comment">//被绑定的设备(下层设备)</span></span></span></span><br><span class="line"><span class="function"><span class="params">				PDRIVER_OBJECT *fltobj,		<span class="comment">//生成设备的指针</span></span></span></span><br><span class="line"><span class="function"><span class="params">				PDRIVER_OBJECT *next)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    NTSTATUS status;</span><br><span class="line">    PDRIVER_OBJECT topdev = <span class="literal">NULL</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//生成设备</span></span><br><span class="line">    status = IoCreateDevice(driver,</span><br><span class="line">    						<span class="number">0</span>,</span><br><span class="line">    						<span class="literal">NULL</span>,</span><br><span class="line">    						oldobj-&gt;DeviceType,</span><br><span class="line">    						<span class="number">0</span>,</span><br><span class="line">    						FALSE,</span><br><span class="line">    						fltobj);</span><br><span class="line">    <span class="keyword">if</span>(status != STATUS_SUCCESS)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> status;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//根据下层设备设置符号位</span></span><br><span class="line">    <span class="keyword">if</span>(oldobj-&gt;Flags &amp; DO_BUFFERED_IO)</span><br><span class="line">    &#123;</span><br><span class="line">        (*fltobj)-&gt;Flags |= DO_BUFFERED_IO;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(oldobj-&gt;Flags &amp; DO_DIRECT_IO)</span><br><span class="line">    &#123;</span><br><span class="line">        (*fltobj)-&gt;Flags |= DO_DIRECT_IO;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(oldobj-&gt;Flags &amp; DO_BUFFERED_IO)</span><br><span class="line">    &#123;</span><br><span class="line">		(*fltobj)-&gt;Flags |= DO_BUFFERED_IO;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">if</span>(oldobj-&gt;Characteristics &amp; FILE_DEVICE_SECURE_OPEN)</span><br><span class="line">    &#123;</span><br><span class="line">		(*fltobj)-&gt;Characteristics |= FILE_DEVICE_SECURE_OPEN;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 如果绑定失败了，销毁设备，重新来过</span></span><br><span class="line">    <span class="keyword">if</span> (topdev == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		IoDeleteDevice(*fltobj);</span><br><span class="line">		*fltobj = <span class="literal">NULL</span>;</span><br><span class="line">		status = STATUS_UNSUCCESSFUL;</span><br><span class="line">		<span class="keyword">return</span> status;</span><br><span class="line">	&#125;</span><br><span class="line">	*next = topdev;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 设置这个设备已经启动。</span></span><br><span class="line">	(*fltobj)-&gt;Flags = (*fltobj)-&gt;Flags &amp; ~DO_DEVICE_INITIALIZING;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> STATUS_SUCCESS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="从名字获得设备对象"><a href="#从名字获得设备对象" class="headerlink" title="从名字获得设备对象"></a>从名字获得设备对象</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//用名字获得设备对象指针，指针保存在参数中，返回状态</span></span><br><span class="line"><span class="function">NTSTATUS <span class="title">IoGetDeviceObjectPointer</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_  PUNICODE_STRING ObjectName,			<span class="comment">//名称字符串</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _In_  ACCESS_MASK     DesiredAccess,		<span class="comment">//访问令牌</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _Out_ PFILE_OBJECT    *FileObject,		<span class="comment">//文件指针，调用成功后解引用</span></span></span></span><br><span class="line"><span class="function"><span class="params">  _Out_ PDEVICE_OBJECT  *DeviceObject		<span class="comment">//返回的对象指针</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function">PDEVICE_OBJECT <span class="title">ccpOpenCom</span><span class="params">(ULONG id,NTSTATUS *status)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	UNICODE_STRING name_str;</span><br><span class="line">	<span class="keyword">static</span> WCHAR name[<span class="number">32</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	PFILE_OBJECT fileobj = <span class="literal">NULL</span>;</span><br><span class="line">	PDEVICE_OBJECT devobj = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 输入字符串</span></span><br><span class="line">	<span class="built_in">memset</span>(name,<span class="number">0</span>,<span class="keyword">sizeof</span>(WCHAR)*<span class="number">32</span>);</span><br><span class="line">	RtlStringCchPrintfW(</span><br><span class="line">		name,<span class="number">32</span>,</span><br><span class="line">		<span class="string">L"\\Device\\Serial%d"</span>,id);</span><br><span class="line">	RtlInitUnicodeString(&amp;name_str,name);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 打开设备对象</span></span><br><span class="line">	*status = IoGetDeviceObjectPointer(&amp;name_str, FILE_ALL_ACCESS, &amp;fileobj, &amp;devobj);</span><br><span class="line">	<span class="keyword">if</span> (*status == STATUS_SUCCESS)</span><br><span class="line">		ObDereferenceObject(fileobj);	<span class="comment">//必须解除引用</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> devobj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>成功打开设备对象后必须调用ObDereferenceObject解除引用
+</code></pre><h3 id="绑定所有串口"><a href="#绑定所有串口" class="headerlink" title="绑定所有串口"></a>绑定所有串口</h3><p>串口不会出现插拔的情况<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CCP_MAX_COM_ID 32		<span class="comment">//假定串口只有32个</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 过滤设备和真实设备</span></span><br><span class="line"><span class="keyword">static</span> PDEVICE_OBJECT s_fltobj[CCP_MAX_COM_ID] = &#123; <span class="number">0</span> &#125;;		<span class="comment">//过设指针</span></span><br><span class="line"><span class="keyword">static</span> PDEVICE_OBJECT s_nextobj[CCP_MAX_COM_ID] = &#123; <span class="number">0</span> &#125;;	<span class="comment">//实设指针</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这个函数绑定所有的串口。</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ccpAttachAllComs</span><span class="params">(PDRIVER_OBJECT driver)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ULONG i;</span><br><span class="line">	PDEVICE_OBJECT com_ob;</span><br><span class="line">	NTSTATUS status;</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>;i&lt;CCP_MAX_COM_ID;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// 获得object引用</span></span><br><span class="line">		com_ob = ccpOpenCom(i,&amp;status);</span><br><span class="line">		<span class="keyword">if</span>(com_ob == <span class="literal">NULL</span>)</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		<span class="comment">// 在这里绑定。并不管绑定是否成功</span></span><br><span class="line">		ccpAttachDevice(driver,com_ob,&amp;s_fltobj[i],&amp;s_nextobj[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="请求的区分"><a href="#请求的区分" class="headerlink" title="请求的区分"></a>请求的区分</h3><pre><code>请求中包含有要发送的数据，请求的回答中则含有要接收的数据
+</code></pre><ol>
+<li>每个驱动程序只有一个驱动对象</li>
+<li>每个驱动程序可以生成若干个设备对象，这些对象从属于一个驱动对象</li>
+<li>若干设备(可以从属于不同的驱动)一次绑定形成一个设备栈，最顶端设备最先收到请求</li>
+</ol>
+<pre><code>请求有多种类型，在串口过滤中只需要考虑读请求(接收)和写请求(发出)，请求类型通过IRP的主功能号进行区分，IRP的主功能号保存在IRP栈空间(irpsp)中的一个字节
+</code></pre><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//用来获得当前栈空间</span></span><br><span class="line"><span class="function">PIO_STACK_LOCATION <span class="title">IoGetCurrentIrpStackLocation</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_ PIRP Irp</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<pre><code>过滤设备对象被绑定在设备栈顶端，所以首先接收到IRP请求的时过滤设备对象
+</code></pre><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将栈空间指针下移，即跳过当前栈空间</span></span><br><span class="line"><span class="function">VOID <span class="title">IoSkipCurrentIrpStackLocation</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  [in, out]  PIRP Irp</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将IRP请求分发到对应真实设备</span></span><br><span class="line"><span class="function">NTSTATUS <span class="title">IoCallDriver</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_    PDEVICE_OBJECT DeviceObject,</span></span></span><br><span class="line"><span class="function"><span class="params">  _Inout_ PIRP           Irp</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="写请求数据"><a href="#写请求数据" class="headerlink" title="写请求数据"></a>写请求数据</h3><p>IRP数据结构中有三个域描述缓冲区</p>
+<ol>
+<li>irp-&gt;MdlAddress 缓冲方式</li>
+<li>irp-&gt;UserBuffer 其他方式(最追求效率)</li>
+<li>irp-&gt;AssociatesIrp.SystemBuffer 直接方式(用于不追请效率)</li>
+</ol>
+<pre><code>把一块内存映射到内核空间
+</code></pre><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//缓冲区处理</span></span><br><span class="line"><span class="function">PVOID <span class="title">MmGetSystemAddressForMdlSafe</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  _in_ PMDL             Mdl,</span></span></span><br><span class="line"><span class="function"><span class="params">  _in_ MM_PAGE_PRIORITY Priority</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line">PBYTE buffer = <span class="literal">NULL</span>;</span><br><span class="line"><span class="keyword">if</span>(irp-&gt;MdlAddress != <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">    buffer = (PBYTE)MmGetSystemAddressForMdlSafe</span><br><span class="line">    							(irp-&gt;MdlAddress，</span><br><span class="line">    							NormalPagePriority);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    buffer = (PBYTE)irp-&gt;UserBuffer;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(buffer == <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">     buffer = (PBYTE)irp-&gt;AssociatesIrp.SystemBuffer;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//分发函数</span></span><br><span class="line"><span class="function">NTSTATUS <span class="title">ccpDispatch</span><span class="params">(PDEVICE_OBJECT device,PIRP irp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PIO_STACK_LOCATION irpsp = </span><br><span class="line">    				IoGetCurrentIrpStackLocation(irp);	<span class="comment">//获取栈空间</span></span><br><span class="line">    NTSTATUS status;</span><br><span class="line">    ULONG i,j;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断发送给哪个设备</span></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;CCP_MAX_COM_ID;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(s_fltobj[i] == device)</span><br><span class="line">        &#123;			</span><br><span class="line">            <span class="comment">// 所有电源操作，全部直接放过</span></span><br><span class="line">            <span class="keyword">if</span>(irpsp-&gt;MajorFunction == IRP_MJ_POWER)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 直接发送，然后返回说已经被处理了</span></span><br><span class="line">                PoStartNextPowerIrp(irp);</span><br><span class="line">                IoSkipCurrentIrpStackLocation(irp);	<span class="comment">//跳过当前栈空间</span></span><br><span class="line">                <span class="keyword">return</span> PoCallDriver(s_nextobj[i],irp);	<span class="comment">//下发执行</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 此外我们只过滤写请求。写请求的话，获得缓冲区以及其长度。</span></span><br><span class="line">            <span class="comment">// 然后打印一下。</span></span><br><span class="line">            <span class="keyword">if</span>(irpsp-&gt;MajorFunction == IRP_MJ_WRITE)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 如果是写，先获得长度</span></span><br><span class="line">                ULONG len = irpsp-&gt;Parameters.Write.Length;</span><br><span class="line">                <span class="comment">// 然后获得缓冲区</span></span><br><span class="line">                PUCHAR buf = <span class="literal">NULL</span>;</span><br><span class="line">                <span class="keyword">if</span>(irp-&gt;MdlAddress != <span class="literal">NULL</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    buf = (PUCHAR)MmGetSystemAddressForMdlSafe</span><br><span class="line">                    					(irp-&gt;MdlAddress,</span><br><span class="line">                    					NormalPagePriority);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    buf = (PUCHAR)irp-&gt;UserBuffer;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(buf == <span class="literal">NULL</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    buf = (PUCHAR)irp-&gt;AssociatedIrp.SystemBuffer;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 打印内容</span></span><br><span class="line">                <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;len;++j)</span><br><span class="line">                &#123;</span><br><span class="line">                    DbgPrint(<span class="string">"comcap: Send Data: %2x\r\n"</span>, buf[j]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 这些请求直接下发执行即可。我们并不禁止或者改变它</span></span><br><span class="line">            IoSkipCurrentIrpStackLocation(irp);</span><br><span class="line">            <span class="keyword">return</span> IoCallDriver(s_nextobj[i],irp);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果根本就不在被绑定的设备中，那是有问题的，直接返回参数错误</span></span><br><span class="line">    irp-&gt;IoStatus.Information = <span class="number">0</span>;</span><br><span class="line">    irp-&gt;IoStatus.Status = STATUS_INVALID_PARAMETER;</span><br><span class="line">    IoCompleteRequest(irp,IO_NO_INCREMENT);</span><br><span class="line">    <span class="keyword">return</span> STATUS_SUCCESS;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="动态卸载"><a href="#动态卸载" class="headerlink" title="动态卸载"></a>动态卸载</h3><p>在卸载函数中完成解除绑定<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将绑定设备解绑</span></span><br><span class="line"><span class="function">VOID <span class="title">IoDetachDevice</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  _Inout_  PDEVICE_OBJECT TargetDevice</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//删除设备</span></span><br><span class="line"><span class="function">VOID <span class="title">IoDeleteDevice</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_ PDEVICE_OBJECT DeviceObject</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//指定当前线程等待一定时间</span></span><br><span class="line"><span class="function">NTSTATUS <span class="title">KeDelayExecutionThread</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_  KPROCESSOR_MODE WaitMode,</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_  BOOLEAN Alertable,</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_  PLARGE_INTEGER Interval</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//示例</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ccpUnload</span><span class="params">(PDRIVER_OBJECT drv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ULONG i;</span><br><span class="line">	LARGE_INTEGER interval;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 首先解除绑定</span></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;CCP_MAX_COM_ID;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(s_nextobj[i] != <span class="literal">NULL</span>)</span><br><span class="line">			IoDetachDevice(s_nextobj[i]);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 睡眠5秒，等待所有irp处理结束</span></span><br><span class="line">	interval.QuadPart = (<span class="number">5</span>*<span class="number">1000</span> * DELAY_ONE_MILLISECOND);		</span><br><span class="line">	KeDelayExecutionThread(KernelMode,FALSE,&amp;interval);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 删除这些设备</span></span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;CCP_MAX_COM_ID;i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(s_fltobj[i] != <span class="literal">NULL</span>)</span><br><span class="line">			IoDeleteDevice(s_fltobj[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+  </section>
+
+  <section class="post-comments">
+    <!-- 将评论系统（例如Disqus、多说、友言、畅言等）提供的代码片段粘贴在这里 -->
+    <!-- UY BEGIN -->
+		<div id="uyan_frame"></div>
+		<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2155514"></script>
+	<!-- UY END -->
+</section>
+
+
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
